@@ -1,0 +1,12 @@
+[workspace]
+name = "rs-screen"
+version = "0.1.0"
+edition = "2021"
+members = []
+
+
+[workspace.package]
+publish = false
+edition = "2021"
+
+[workspace.dependencies]
