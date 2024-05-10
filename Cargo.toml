@@ -1,12 +1,12 @@
-[workspace]
+[package]
 name = "rs-screen"
 version = "0.1.0"
 edition = "2021"
 members = []
 
+[dependencies]
+iced = { version = "0.13.0-dev", features = ["canvas"] }
 
-[workspace.package]
-publish = false
-edition = "2021"
-
-[workspace.dependencies]
+[patch.crates-io]
+iced = { git = "https://github.com/iced-rs/iced", rev = "31d1d5fecbef50fa319cabd5d4194f1e4aaefa21" }
+iced_core = { git = "https://github.com/iced-rs/iced", rev = "31d1d5fecbef50fa319cabd5d4194f1e4aaefa21" }
