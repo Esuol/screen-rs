@@ -1,3 +1,5 @@
+extern crate charts;
+
 mod bar_chart;
 mod dashboard;
 mod layout;
