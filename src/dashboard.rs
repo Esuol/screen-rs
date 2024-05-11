@@ -6,7 +6,7 @@ pub fn render_dashboard() -> Element<'static, Message> {
     let dashboard =
         container(row![render_time_container(), render_dashboards_container()].spacing(10))
             .width(Length::Fill)
-            .height(150);
+            .height(Length::FillPortion(20));
 
     dashboard.into()
 }
@@ -18,7 +18,7 @@ fn render_time_container() -> Element<'static, Message> {
         text("00:00:00"),
     ])
     .width(Length::FillPortion(15))
-    .height(150)
+    .height(Length::Fill)
     .center_x()
     .style(dashbord_time_container_style)];
 
@@ -38,7 +38,7 @@ fn render_dashboards_container() -> Element<'static, Message> {
     ]
     .spacing(10)
     .width(Length::FillPortion(80))
-    .height(150);
+    .height(Length::Fill);
 
     dashboards_container.into()
 }
@@ -50,7 +50,7 @@ fn render_dashboard_item() -> Element<'static, Message> {
         text("00:00:00"),
     ])
     .width(Length::FillPortion(12))
-    .height(150)
+    .height(Length::Fill)
     .center_x()
     .style(dashbord_time_container_style)];
 

@@ -1,4 +1,5 @@
 use crate::Message;
+use crate::{render_bar_charts, render_dashboard, render_pie_charts};
 use iced::mouse;
 use iced::widget::{canvas, column, container, horizontal_space, row, scrollable};
 use iced::{Alignment, Element, Length, Point, Rectangle, Renderer, Theme};
@@ -12,12 +13,12 @@ pub struct Views {
 impl Views {
     const LIST: &'static [Self] = &[
         Self {
-            title: "rs-big-data-screen-1",
-            view: application,
+            title: "First-Screen",
+            view: render_first_screen,
         },
         Self {
-            title: "rs-big-data-screen-2",
-            view: application,
+            title: "Second-Screen",
+            view: render_first_screen,
         },
     ];
 
@@ -59,7 +60,7 @@ impl Default for Views {
     }
 }
 
-fn application<'a>() -> Element<'a, Message> {
+fn render_first_screen<'a>() -> Element<'a, Message> {
     let header = container(
         row![
             square(40),
@@ -75,31 +76,24 @@ fn application<'a>() -> Element<'a, Message> {
         let palette = theme.extended_palette();
 
         container::Style::default().with_border(palette.background.strong.color, 1)
-    });
+    })
+    .height(60);
 
-    let sidebar = container(
-        column!["Sidebar!", square(50), square(50)]
-            .spacing(40)
-            .padding(10)
-            .width(200)
-            .align_items(Alignment::Center),
+    let dashboard = render_dashboard();
+
+    let bar_charts = render_bar_charts();
+
+    let pie_charts = render_pie_charts();
+
+    container(
+        column![header, dashboard, bar_charts, pie_charts]
+            .spacing(10)
+            .align_items(Alignment::Center)
+            .width(Length::Fill),
     )
-    .style(container::rounded_box)
     .height(Length::Fill)
-    .center_y();
-
-    let content = container(
-        scrollable(
-            column!["Content!", square(400), square(200), square(400), "The end"]
-                .spacing(40)
-                .align_items(Alignment::Center)
-                .width(Length::Fill),
-        )
-        .height(Length::Fill),
-    )
-    .padding(10);
-
-    column![header, row![sidebar, content]].into()
+    .padding(10)
+    .into()
 }
 
 fn square<'a>(size: impl Into<Length> + Copy) -> Element<'a, Message> {
