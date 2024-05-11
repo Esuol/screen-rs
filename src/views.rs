@@ -12,11 +12,11 @@ pub struct Views {
 impl Views {
     const LIST: &'static [Self] = &[
         Self {
-            title: "园区SHE",
+            title: "rs-big-data-screen-1",
             view: application,
         },
         Self {
-            title: "园区SHE2",
+            title: "rs-big-data-screen-2",
             view: application,
         },
     ];

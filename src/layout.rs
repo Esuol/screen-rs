@@ -1,8 +1,8 @@
+use crate::views::Views;
+use crate::{dashboard, render_bar_charts};
 use iced::keyboard;
 use iced::widget::{button, checkbox, column, container, horizontal_space, pick_list, row, text};
 use iced::{color, Alignment, Element, Font, Length, Subscription, Theme};
-
-use crate::views::Views;
 
 #[derive(Default, Debug)]
 pub struct Layout {
@@ -61,6 +61,10 @@ impl Layout {
         .spacing(20)
         .align_items(Alignment::Center);
 
+        let dashboard = dashboard::render_dashboard();
+
+        let bar_charts = render_bar_charts();
+
         let example = container(if self.explain {
             self.views.view().explain(color!(0x0000ff))
         } else {
@@ -95,7 +99,7 @@ impl Layout {
         .into_iter()
         .flatten());
 
-        column![header, example, controls]
+        column![header, dashboard, bar_charts, example, controls]
             .spacing(10)
             .padding(20)
             .into()
