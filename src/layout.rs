@@ -46,9 +46,11 @@ impl Layout {
             Message::ThemeSelected(theme) => {
                 self.theme = theme;
             }
+            // 时钟
             Message::Tick => {
                 self.time = Local::now().format("%Y-%m-%d %H:%M:%S").to_string();
             }
+            // 太阳系统
             Message::TickSolar(instant) => {
                 self.solar.update(instant);
             }
