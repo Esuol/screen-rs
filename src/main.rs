@@ -9,6 +9,7 @@ mod views;
 
 pub use bar_chart::render_bar_charts;
 pub use dashboard::render_dashboard;
+use iced::Font;
 use layout::Layout;
 pub use layout::Message;
 pub use pie_chart::render_pie_charts;
@@ -18,5 +19,7 @@ fn main() -> iced::Result {
     iced::program(Layout::title, Layout::update, Layout::view)
         .subscription(Layout::subscription)
         .theme(Layout::theme)
+        .font(include_bytes!("../fonts/icons.ttf").as_slice())
+        .default_font(Font::MONOSPACE)
         .run()
 }

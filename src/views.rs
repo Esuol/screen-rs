@@ -2,8 +2,8 @@ use crate::Message;
 use crate::State;
 use crate::{render_bar_charts, render_dashboard, render_pie_charts};
 use iced::mouse;
-use iced::widget::{canvas, column, container, horizontal_space, row};
-use iced::{Alignment, Element, Length, Point, Rectangle, Renderer, Theme};
+use iced::widget::{canvas, column, container, horizontal_space, row, text};
+use iced::{Alignment, Color, Element, Length, Point, Rectangle, Renderer, Theme};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Views {
@@ -65,11 +65,17 @@ fn render_first_screen<'a>() -> Element<'a, Message> {
     // 太阳
     let solar = canvas(State::new()).width(60).height(36);
 
+    let header_title = "YUANQU HSE";
+
+    let header_text = text(header_title)
+        .size(28)
+        .color(Color::from_rgb8(42, 163, 199));
+
     let header = container(
         row![
             solar,
             horizontal_space(),
-            "Header!",
+            header_text,
             horizontal_space(),
             square(40),
         ]
