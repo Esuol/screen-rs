@@ -1,10 +1,12 @@
+use crate::solar::State;
 use crate::views::Views;
-use iced::time::Duration;
-
 use chrono::Local;
 use iced::keyboard;
+use iced::time::Duration;
 use iced::widget::{button, checkbox, column, container, horizontal_space, pick_list, row, text};
+use iced::window;
 use iced::{color, Alignment, Element, Font, Length, Subscription, Theme};
+use std::time::Instant;
 
 #[derive(Default, Debug)]
 pub struct Layout {
@@ -12,6 +14,7 @@ pub struct Layout {
     pub explain: bool,
     pub theme: Theme,
     pub time: String,
+    pub solar: State,
 }
 
 #[derive(Debug, Clone)]
@@ -21,6 +24,7 @@ pub enum Message {
     ExplainToggked(bool),
     ThemeSelected(Theme),
     Tick,
+    TickSolar(Instant),
 }
 
 impl Layout {
@@ -45,6 +49,9 @@ impl Layout {
             Message::Tick => {
                 self.time = Local::now().format("%Y-%m-%d %H:%M:%S").to_string();
             }
+            Message::TickSolar(instant) => {
+                self.solar.update(instant);
+            }
         }
     }
 
@@ -59,7 +66,13 @@ impl Layout {
 
         let tick_subscription = iced::time::every(Duration::from_secs(1)).map(|_| Message::Tick);
 
-        Subscription::batch(vec![keyboard_subscription, tick_subscription])
+        let tick_solar_subscription = window::frames().map(Message::TickSolar);
+
+        Subscription::batch(vec![
+            keyboard_subscription,
+            tick_subscription,
+            tick_solar_subscription,
+        ])
     }
 
     pub fn view(&self) -> Element<Message> {
