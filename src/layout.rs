@@ -1,18 +1,17 @@
 use crate::views::Views;
-use crate::State;
+use iced::time::Duration;
 
+use chrono::Local;
 use iced::keyboard;
 use iced::widget::{button, checkbox, column, container, horizontal_space, pick_list, row, text};
 use iced::{color, Alignment, Element, Font, Length, Subscription, Theme};
 
-use std::time::Instant;
-
 #[derive(Default, Debug)]
 pub struct Layout {
-    pub solar: State,
     pub views: Views,
     pub explain: bool,
     pub theme: Theme,
+    pub time: String,
 }
 
 #[derive(Debug, Clone)]
@@ -21,7 +20,7 @@ pub enum Message {
     Previous,
     ExplainToggked(bool),
     ThemeSelected(Theme),
-    Tick(Instant),
+    Tick,
 }
 
 impl Layout {
@@ -43,8 +42,8 @@ impl Layout {
             Message::ThemeSelected(theme) => {
                 self.theme = theme;
             }
-            Message::Tick(instant) => {
-                self.solar.update(instant);
+            Message::Tick => {
+                self.time = Local::now().format("%Y-%m-%d %H:%M:%S").to_string();
             }
         }
     }
@@ -52,11 +51,15 @@ impl Layout {
     pub fn subscription(&self) -> Subscription<Message> {
         use keyboard::key;
 
-        keyboard::on_key_press(|key, _modifiers| match key {
+        let keyboard_subscription = keyboard::on_key_press(|key, _modifiers| match key {
             keyboard::Key::Named(key::Named::ArrowLeft) => Some(Message::Previous),
             keyboard::Key::Named(key::Named::ArrowRight) => Some(Message::Next),
             _ => None,
-        })
+        });
+
+        let tick_subscription = iced::time::every(Duration::from_secs(1)).map(|_| Message::Tick);
+
+        Subscription::batch(vec![keyboard_subscription, tick_subscription])
     }
 
     pub fn view(&self) -> Element<Message> {
@@ -70,9 +73,9 @@ impl Layout {
         .align_items(Alignment::Center);
 
         let content = container(if self.explain {
-            self.views.view().explain(color!(0x0000ff))
+            self.views.view(self.time.clone()).explain(color!(0x0000ff))
         } else {
-            self.views.view()
+            self.views.view(self.time.clone())
         })
         .style(|theme| {
             let palette = theme.extended_palette();

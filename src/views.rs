@@ -1,14 +1,13 @@
 use crate::Message;
 use crate::State;
 use crate::{render_bar_charts, render_dashboard, render_pie_charts};
-use chrono::{DateTime, Local};
 use iced::widget::{canvas, column, container, horizontal_space, row, text};
 use iced::{Alignment, Color, Element, Length};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Views {
     pub title: &'static str,
-    pub view: fn() -> Element<'static, Message>,
+    pub view: fn(time: String) -> Element<'static, Message>,
 }
 
 impl Views {
@@ -50,8 +49,8 @@ impl Views {
         Self::LIST.get(index + 1).copied().unwrap_or(self)
     }
 
-    pub fn view(&self) -> Element<Message> {
-        (self.view)()
+    pub fn view(&self, time: String) -> Element<Message> {
+        (self.view)(time)
     }
 }
 
@@ -61,7 +60,7 @@ impl Default for Views {
     }
 }
 
-fn render_first_screen<'a>() -> Element<'a, Message> {
+fn render_first_screen<'a>(time: String) -> Element<'a, Message> {
     // 太阳
     let solar = canvas(State::new()).width(60).height(36);
 
@@ -70,10 +69,9 @@ fn render_first_screen<'a>() -> Element<'a, Message> {
         .size(28)
         .color(Color::from_rgb8(42, 163, 199));
     // 时间
-    let now = Local::now().format("%Y-%m-%d %H:%M:%S").to_string();
-    let date_result = format!("{} {}", "Current time is:", now);
+    let date_result = format!("{} {}", "", time);
     let current_date = text(date_result)
-        .size(18)
+        .size(16)
         .color(Color::from_rgb8(42, 163, 199));
 
     let header = container(
