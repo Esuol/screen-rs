@@ -1,9 +1,9 @@
 use crate::Message;
 use crate::State;
 use crate::{render_bar_charts, render_dashboard, render_pie_charts};
-use iced::mouse;
+use chrono::{DateTime, Local};
 use iced::widget::{canvas, column, container, horizontal_space, row, text};
-use iced::{Alignment, Color, Element, Length, Point, Rectangle, Renderer, Theme};
+use iced::{Alignment, Color, Element, Length};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Views {
@@ -66,9 +66,14 @@ fn render_first_screen<'a>() -> Element<'a, Message> {
     let solar = canvas(State::new()).width(60).height(36);
 
     let header_title = "YUANQU HSE";
-
     let header_text = text(header_title)
         .size(28)
+        .color(Color::from_rgb8(42, 163, 199));
+    // 时间
+    let now = Local::now().format("%Y-%m-%d %H:%M:%S").to_string();
+    let date_result = format!("{} {}", "Current time is:", now);
+    let current_date = text(date_result)
+        .size(18)
         .color(Color::from_rgb8(42, 163, 199));
 
     let header = container(
@@ -77,7 +82,7 @@ fn render_first_screen<'a>() -> Element<'a, Message> {
             horizontal_space(),
             header_text,
             horizontal_space(),
-            square(40),
+            current_date,
         ]
         .padding(10)
         .align_items(Alignment::Center),
@@ -104,35 +109,4 @@ fn render_first_screen<'a>() -> Element<'a, Message> {
     .height(Length::Fill)
     .padding(10)
     .into()
-}
-
-fn square<'a>(size: impl Into<Length> + Copy) -> Element<'a, Message> {
-    struct Square;
-
-    impl canvas::Program<Message> for Square {
-        type State = ();
-
-        fn draw(
-            &self,
-            _state: &Self::State,
-            renderer: &Renderer,
-            theme: &Theme,
-            bounds: Rectangle,
-            _cursor: mouse::Cursor,
-        ) -> Vec<canvas::Geometry> {
-            let mut frame = canvas::Frame::new(renderer, bounds.size());
-
-            let palette = theme.extended_palette();
-
-            frame.fill_rectangle(
-                Point::ORIGIN,
-                bounds.size(),
-                palette.background.strong.color,
-            );
-
-            vec![frame.into_geometry()]
-        }
-    }
-
-    canvas(Square).width(size).height(size).into()
 }
