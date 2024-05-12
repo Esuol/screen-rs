@@ -15,11 +15,11 @@ pub struct State {
 }
 
 impl State {
-    const SUN_RADIUS: f32 = 70.0;
-    const ORBIT_RADIUS: f32 = 150.0;
-    const EARTH_RADIUS: f32 = 12.0;
-    const MOON_RADIUS: f32 = 4.0;
-    const MOON_DISTANCE: f32 = 28.0;
+    const SUN_RADIUS: f32 = 16.0;
+    const ORBIT_RADIUS: f32 = 25.0;
+    const EARTH_RADIUS: f32 = 6.0;
+    const MOON_RADIUS: f32 = 2.0;
+    const MOON_DISTANCE: f32 = 3.0;
 
     pub fn new() -> State {
         let now = Instant::now();
@@ -57,6 +57,7 @@ impl<Message> canvas::Program<Message> for State {
             let orbit = Path::circle(center, Self::ORBIT_RADIUS);
 
             frame.fill(&sun, Color::from_rgb8(0xF9, 0xD7, 0x1C));
+
             frame.stroke(
                 &orbit,
                 Stroke {
@@ -71,7 +72,7 @@ impl<Message> canvas::Program<Message> for State {
             );
 
             let elapsed = self.now - self.start;
-            let rotation = (2.0 * PI / 60.0) * elapsed.as_secs() as f32
+            let rotation = (21.0 * PI / 60.0) * elapsed.as_secs() as f32
                 + (2.0 * PI / 60_000.0) * elapsed.subsec_millis() as f32;
 
             frame.with_save(|frame| {

@@ -1,13 +1,15 @@
 use crate::views::Views;
+use crate::State;
 
 use iced::keyboard;
-use iced::widget::{
-    button, checkbox, column, container, horizontal_space, pick_list, row, text,
-};
+use iced::widget::{button, checkbox, column, container, horizontal_space, pick_list, row, text};
 use iced::{color, Alignment, Element, Font, Length, Subscription, Theme};
+
+use std::time::Instant;
 
 #[derive(Default, Debug)]
 pub struct Layout {
+    pub solar: State,
     pub views: Views,
     pub explain: bool,
     pub theme: Theme,
@@ -19,6 +21,7 @@ pub enum Message {
     Previous,
     ExplainToggked(bool),
     ThemeSelected(Theme),
+    Tick(Instant),
 }
 
 impl Layout {
@@ -39,6 +42,9 @@ impl Layout {
             }
             Message::ThemeSelected(theme) => {
                 self.theme = theme;
+            }
+            Message::Tick(instant) => {
+                self.solar.update(instant);
             }
         }
     }

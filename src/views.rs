@@ -63,9 +63,7 @@ impl Default for Views {
 
 fn render_first_screen<'a>() -> Element<'a, Message> {
     // 太阳
-    let solar = canvas(State::new())
-        .width(Length::Fill)
-        .height(Length::Fill);
+    let solar = canvas(State::new()).width(60).height(36);
 
     let header = container(
         row![
