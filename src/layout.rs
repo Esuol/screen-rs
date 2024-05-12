@@ -3,7 +3,7 @@ use crate::views::Views;
 use chrono::Local;
 use iced::keyboard;
 use iced::time::Duration;
-use iced::widget::{button, checkbox, column, container, horizontal_space, pick_list, row, text};
+use iced::widget::{button, checkbox, column, container, horizontal_space, row, text};
 use iced::window;
 use iced::{color, Alignment, Element, Font, Length, Subscription, Theme};
 use std::time::Instant;
@@ -82,7 +82,6 @@ impl Layout {
             text(self.views.title).size(20).font(Font::MONOSPACE),
             horizontal_space(),
             checkbox("Explain", self.explain).on_toggle(Message::ExplainToggked),
-            pick_list(Theme::ALL, Some(&self.theme), Message::ThemeSelected),
         ]
         .spacing(20)
         .align_items(Alignment::Center);
