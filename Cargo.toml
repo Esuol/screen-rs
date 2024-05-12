@@ -6,7 +6,9 @@ edition = "2021"
 members = ["packages/actix_server", "packages/charts"]
 
 [dependencies]
-iced = { version = "0.13.0-dev", features = ["canvas"] }
+iced = { version = "0.13.0-dev", features = ["canvas", "debug", "tokio"] }
+rand = "0.8.3"
+tracing-subscriber = "0.3"
 
 charts = { path = "packages/charts" }
 

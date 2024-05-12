@@ -1,6 +1,9 @@
 use crate::views::Views;
+
 use iced::keyboard;
-use iced::widget::{button, checkbox, column, container, horizontal_space, pick_list, row, text};
+use iced::widget::{
+    button, checkbox, column, container, horizontal_space, pick_list, row, text,
+};
 use iced::{color, Alignment, Element, Font, Length, Subscription, Theme};
 
 #[derive(Default, Debug)]
@@ -101,6 +104,6 @@ impl Layout {
     }
 
     pub fn theme(&self) -> Theme {
-        self.theme.clone()
+        Theme::Moonfly
     }
 }

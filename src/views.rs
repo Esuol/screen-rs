@@ -1,7 +1,8 @@
 use crate::Message;
+use crate::State;
 use crate::{render_bar_charts, render_dashboard, render_pie_charts};
 use iced::mouse;
-use iced::widget::{canvas, column, container, horizontal_space, row, scrollable};
+use iced::widget::{canvas, column, container, horizontal_space, row};
 use iced::{Alignment, Element, Length, Point, Rectangle, Renderer, Theme};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -61,9 +62,14 @@ impl Default for Views {
 }
 
 fn render_first_screen<'a>() -> Element<'a, Message> {
+    // 太阳
+    let solar = canvas(State::new())
+        .width(Length::Fill)
+        .height(Length::Fill);
+
     let header = container(
         row![
-            square(40),
+            solar,
             horizontal_space(),
             "Header!",
             horizontal_space(),
