@@ -70,11 +70,6 @@ fn render_first_screen<'a>(time: String) -> Element<'a, Message> {
     let header_text = text(header_title)
         .size(28)
         .color(Color::from_rgb8(42, 163, 199));
-    // 时间
-    let date_result = format!("{} {}", "", time);
-    let current_date = text(date_result)
-        .size(16)
-        .color(Color::from_rgb8(42, 163, 199));
 
     let header = container(
         row![
@@ -82,7 +77,6 @@ fn render_first_screen<'a>(time: String) -> Element<'a, Message> {
             horizontal_space(),
             header_text,
             horizontal_space(),
-            current_date,
             clock,
         ]
         .padding(10)
@@ -95,7 +89,7 @@ fn render_first_screen<'a>(time: String) -> Element<'a, Message> {
     })
     .height(60);
 
-    let dashboard = render_dashboard();
+    let dashboard = render_dashboard(time);
 
     let bar_charts = render_bar_charts();
 

@@ -48,7 +48,7 @@ impl Layout {
             }
             // 时钟
             Message::Tick => {
-                self.time = Local::now().format("%Y-%m-%d %H:%M:%S").to_string();
+                self.time = Local::now().format("%H:%M:%S%.3f").to_string();
             }
             // 太阳系统
             Message::TickSolar(instant) => {
