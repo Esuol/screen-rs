@@ -49,7 +49,9 @@ fn render_dashboard_item(now: u8, title: &str) -> Element<'static, Message> {
     let dashboard_one = canvas(Dashboard::new(now))
         .width(Length::Fill)
         .height(Length::Fill);
-    let header_text = text(title).size(14).color(Color::from_rgb8(42, 163, 199));
+    let header_text = text(title.to_string())
+        .size(14)
+        .color(Color::from_rgb8(42, 163, 199));
     let dashboard_item = row![container(
         column![header_text, dashboard_one,]
             .align_items(Alignment::Center)
@@ -65,8 +67,6 @@ fn render_dashboard_item(now: u8, title: &str) -> Element<'static, Message> {
 }
 
 pub fn dashbord_time_container_style(theme: &Theme) -> container::Style {
-    let palette = theme.extended_palette();
-
     container::Style {
         background: Some(iced::Color::TRANSPARENT.into()),
         border: Border {
