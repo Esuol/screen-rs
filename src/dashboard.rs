@@ -70,3 +70,6 @@ pub fn dashbord_time_container_style(theme: &Theme) -> container::Style {
         ..Default::default()
     }
 }
+
+
+// 生成仪表盘
