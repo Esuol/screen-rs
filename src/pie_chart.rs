@@ -1,6 +1,7 @@
 use crate::Message;
-use iced::widget::{column, container, horizontal_space, image, row, text};
-use iced::{Border, Element, Length, Theme};
+use iced::alignment::{self};
+use iced::widget::{column, container, image, row, text};
+use iced::{Color, Element, Length, Padding};
 
 pub fn render_pie_charts() -> Element<'static, Message> {
     let dashboard = container(
@@ -44,29 +45,50 @@ fn render_bar_chart_container() -> Element<'static, Message> {
 }
 
 fn render_switch_info_container() -> Element<'static, Message> {
+    let dot_color = Color::from_rgb8(254, 174, 17);
+    let color = Color::from_rgb8(16, 136, 212);
+    let a_txt = render_txt("To be both a speaker of words and a doer of deeds.", color);
+    let b_txt = render_txt(
+        "The shortest way to do many things is to only one thing at a time.",
+        color,
+    );
+    let c_tex = render_txt("Variety is the spice of life.", color);
+    let d_txt = render_txt("Bad times make a good man.", dot_color);
+    let e_txt = render_txt("There is no royal road to learning.", color);
+    let f_txt = render_txt("Doubt is the key to knowledge.", color);
+    let g_txt = render_txt(
+        "Life is fine and enjoyable, yet you must learn to enjoy your fine life.",
+        color,
+    );
+    let h_txt = render_txt("A man's best friends are his ten fingers.", color);
+    let i_txt = render_txt(
+        "Life is the art of drawing sufficient conclusions form insufficient premises.",
+        color,
+    );
+
     let time_container = row![container(column![
-        text("Time").size(20),
-        horizontal_space(),
-        text("00:00:00"),
+        a_txt, b_txt, c_tex, d_txt, e_txt, f_txt, g_txt, h_txt, i_txt
     ])
     .width(Length::FillPortion(40))
     .height(Length::Fill)
     .center_x()
-    .style(dashbord_time_container_style)];
+    .padding(Padding {
+        top: 0.0,
+        right: 0.0,
+        bottom: 10.0,
+        left: 0.0
+    })];
 
     time_container.into()
 }
 
-pub fn dashbord_time_container_style(theme: &Theme) -> container::Style {
-    let palette = theme.extended_palette();
+fn render_txt(content: &str, color: Color) -> Element<'static, Message> {
+    let header_text = text(content.to_string())
+        .size(13)
+        .width(Length::Fill)
+        .height(Length::Fill)
+        .horizontal_alignment(alignment::Horizontal::Left)
+        .color(color);
 
-    container::Style {
-        background: Some(palette.background.weak.color.into()),
-        border: Border {
-            width: 2.0,
-            color: palette.background.strong.color,
-            ..Border::default()
-        },
-        ..Default::default()
-    }
+    header_text.into()
 }
