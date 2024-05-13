@@ -9,3 +9,7 @@ edition = "2021"
 plotters-backend = { workspace = true }
 plotters.workspace = true
 image.workspace = true
+rand.workspace = true
+num-traits.workspace = true
+rand_xorshift.workspace = true
+rand_distr.workspace = true

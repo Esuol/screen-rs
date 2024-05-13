@@ -69,7 +69,7 @@ impl DrawingBackend for TextDrawingBackend {
             for c in 0..100 {
                 buf.push(self.0[r * 100 + c].to_char());
             }
-            println!("{}", buf);
+            // println!("{}", buf);
         }
 
         Ok(())
