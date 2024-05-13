@@ -9,6 +9,7 @@ pub fn draw_bar_chart(
     background: RGBAColor,
     data: &[u32],
     output_path: &str,
+    title: &str
 ) -> Result<String, Box<dyn std::error::Error>> {
     let root = BitMapBackend::new(output_path, (width, height)).into_drawing_area();
 
@@ -19,7 +20,7 @@ pub fn draw_bar_chart(
         .y_label_area_size(40)
         .margin(5)
         .caption(
-            "Hidden danger rectification rate",
+            title,
             ("sans-serif", 60.0)
                 .into_font()
                 .color(&RGBColor(42, 163, 199)),
