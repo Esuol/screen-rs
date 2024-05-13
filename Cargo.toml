@@ -3,7 +3,9 @@
 name = "rs-screen"
 version = "0.1.0"
 edition = "2021"
+readme = "README.md"
 members = ["packages/actix_server", "packages/charts"]
+description = "A cross-platform big data visualization screen"
 
 [dependencies]
 iced = { version = "0.13.0-dev", features = [
