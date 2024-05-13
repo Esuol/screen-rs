@@ -29,14 +29,14 @@ fn render_time_container() -> Element<'static, Message> {
 
 fn render_dashboards_container() -> Element<'static, Message> {
     let dashboards_container = row![
-        render_dashboard_item(20),
-        render_dashboard_item(10),
-        render_dashboard_item(18),
-        render_dashboard_item(45),
-        render_dashboard_item(54),
-        render_dashboard_item(32),
-        render_dashboard_item(26),
-        render_dashboard_item(59),
+        render_dashboard_item(20, "Fluid"),
+        render_dashboard_item(10, "Scale"),
+        render_dashboard_item(18, "Dawn"),
+        render_dashboard_item(45, "Sober"),
+        render_dashboard_item(54, "Wanna"),
+        render_dashboard_item(32, "Remix"),
+        render_dashboard_item(26, "Hopper"),
+        render_dashboard_item(59, "Earth"),
     ]
     .spacing(10)
     .width(Length::FillPortion(80))
@@ -45,11 +45,11 @@ fn render_dashboards_container() -> Element<'static, Message> {
     dashboards_container.into()
 }
 
-fn render_dashboard_item(now: u8) -> Element<'static, Message> {
+fn render_dashboard_item(now: u8, title: &str) -> Element<'static, Message> {
     let dashboard_one = canvas(Dashboard::new(now))
         .width(Length::Fill)
         .height(Length::Fill);
-    let header_text = text("Fluid").size(14).color(Color::from_rgb8(42, 163, 199));
+    let header_text = text(title).size(14).color(Color::from_rgb8(42, 163, 199));
     let dashboard_item = row![container(
         column![header_text, dashboard_one,]
             .align_items(Alignment::Center)
