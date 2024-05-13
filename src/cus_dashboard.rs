@@ -1,6 +1,6 @@
 use iced::mouse;
 use iced::widget::canvas;
-use iced::widget::canvas::{Fill, Frame, Path, Stroke, Text};
+use iced::widget::canvas::{Cache, Fill, Frame, Path, Stroke, Text};
 use iced::{Color, Element, Point, Rectangle, Renderer, Size, Theme, Vector};
 
 pub struct Dashboard {
@@ -8,15 +8,23 @@ pub struct Dashboard {
     background: Color,
     ticks: Vec<u32>,
     value: u32,
+    cache: Cache,
 }
 
 impl Dashboard {
-    pub fn new(size: f32, background: Color, ticks: Vec<u32>, value: u32) -> Dashboard {
+    pub fn new(
+        size: f32,
+        background: Color,
+        ticks: Vec<u32>,
+        value: u32,
+        cache: Cache,
+    ) -> Dashboard {
         Dashboard {
             size,
             background,
             ticks,
             value,
+            cache,
         }
     }
 
@@ -63,14 +71,16 @@ impl<Message> canvas::Program<Message> for Dashboard {
             bounds.center().y + 200.0 * pointer_angle.sin(),
         );
 
-        path.move_to(bounds.center());
-        path.line_to(pointer_to);
-
         // 使用黑色描边来绘制路径
         let stroke = Stroke::default().with_color(Color::BLACK);
+        geometry.push(self.cache.draw(renderer, bounds.size(), |frame| {
+            // 创建一个新的 Path
+            let mut path = Path::new();
+            path.move_to(Point::new(50.0, 50.0));
+            path.line_to(Point::new(100.0, 100.0));
 
-        geometry.push(renderer.draw(&path.stroke(stroke)));
-
-        geometry
+            // 使用黑色描边来绘制路径
+            frame.stroke(&path, &stroke);
+        }));
     }
 }

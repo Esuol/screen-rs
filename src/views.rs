@@ -1,6 +1,7 @@
 use crate::{dashboard, Message};
 use crate::{render_bar_charts, render_dashboard, render_pie_charts};
 use crate::{Dashboard, State};
+use iced::widget::canvas::Cache;
 use iced::widget::{canvas, column, container, horizontal_space, row, text};
 use iced::{Alignment, Color, Element, Length};
 
@@ -69,6 +70,7 @@ fn render_first_screen<'a>(time: String) -> Element<'a, Message> {
         Color::from_rgb8(42, 163, 199),
         vec![1, 200, 500],
         80,
+        Cache::default(),
     ))
     .width(60)
     .height(36);
