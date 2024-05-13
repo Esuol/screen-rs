@@ -1,7 +1,6 @@
-use crate::{dashboard, Message};
+use crate::Message;
 use crate::{render_bar_charts, render_dashboard, render_pie_charts};
-use crate::{Dashboard, State};
-use iced::widget::canvas::Cache;
+use crate::{Clock, State};
 use iced::widget::{canvas, column, container, horizontal_space, row, text};
 use iced::{Alignment, Color, Element, Length};
 
@@ -65,17 +64,9 @@ fn render_first_screen<'a>(time: String) -> Element<'a, Message> {
     // 太阳
     let solar = canvas(State::new()).width(60).height(36);
 
-    let dashboard = canvas(Dashboard::new(
-        60.0,
-        Color::from_rgb8(42, 163, 199),
-        vec![1, 200, 500],
-        80,
-        Cache::default(),
-    ))
-    .width(60)
-    .height(36);
+    let clock = canvas(Clock::default()).width(60).height(36);
 
-    let header_title = "YUANQU HSE";
+    let header_title = "HSE";
     let header_text = text(header_title)
         .size(28)
         .color(Color::from_rgb8(42, 163, 199));
@@ -87,12 +78,12 @@ fn render_first_screen<'a>(time: String) -> Element<'a, Message> {
 
     let header = container(
         row![
-            dashboard,
             solar,
             horizontal_space(),
             header_text,
             horizontal_space(),
             current_date,
+            clock,
         ]
         .padding(10)
         .align_items(Alignment::Center),
@@ -100,7 +91,7 @@ fn render_first_screen<'a>(time: String) -> Element<'a, Message> {
     .style(|theme| {
         let palette = theme.extended_palette();
 
-        container::Style::default().with_border(palette.background.strong.color, 1)
+        container::Style::default().with_border(palette.background.strong.color, 0)
     })
     .height(60);
 

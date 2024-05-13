@@ -1,6 +1,8 @@
+use crate::Dashboard;
 use crate::Message;
-use iced::widget::{column, container, horizontal_space, row, text};
-use iced::{Border, Element, Length, Theme};
+use iced::alignment::Alignment;
+use iced::widget::{canvas, column, container, horizontal_space, row, text};
+use iced::{Border, Color, Element, Length, Theme};
 
 pub fn render_dashboard() -> Element<'static, Message> {
     let dashboard =
@@ -27,14 +29,14 @@ fn render_time_container() -> Element<'static, Message> {
 
 fn render_dashboards_container() -> Element<'static, Message> {
     let dashboards_container = row![
-        render_dashboard_item(),
-        render_dashboard_item(),
-        render_dashboard_item(),
-        render_dashboard_item(),
-        render_dashboard_item(),
-        render_dashboard_item(),
-        render_dashboard_item(),
-        render_dashboard_item(),
+        render_dashboard_item(20),
+        render_dashboard_item(10),
+        render_dashboard_item(18),
+        render_dashboard_item(45),
+        render_dashboard_item(54),
+        render_dashboard_item(32),
+        render_dashboard_item(26),
+        render_dashboard_item(59),
     ]
     .spacing(10)
     .width(Length::FillPortion(80))
@@ -43,15 +45,20 @@ fn render_dashboards_container() -> Element<'static, Message> {
     dashboards_container.into()
 }
 
-fn render_dashboard_item() -> Element<'static, Message> {
-    let dashboard_item = row![container(column![
-        text("Time").size(20),
-        horizontal_space(),
-        text("00:00:00"),
-    ])
+fn render_dashboard_item(now: u8) -> Element<'static, Message> {
+    let dashboard_one = canvas(Dashboard::new(now))
+        .width(Length::Fill)
+        .height(Length::Fill);
+    let header_text = text("Fluid").size(14).color(Color::from_rgb8(42, 163, 199));
+    let dashboard_item = row![container(
+        column![header_text, dashboard_one,]
+            .align_items(Alignment::Center)
+            .padding(8)
+    )
     .width(Length::FillPortion(12))
     .height(Length::Fill)
     .center_x()
+    .center_y()
     .style(dashbord_time_container_style)];
 
     dashboard_item.into()
@@ -61,15 +68,14 @@ pub fn dashbord_time_container_style(theme: &Theme) -> container::Style {
     let palette = theme.extended_palette();
 
     container::Style {
-        background: Some(palette.background.weak.color.into()),
+        background: Some(iced::Color::TRANSPARENT.into()),
         border: Border {
-            width: 2.0,
-            color: palette.background.strong.color,
+            width: 0.0,
+
             ..Border::default()
         },
         ..Default::default()
     }
 }
-
 
 // 生成仪表盘

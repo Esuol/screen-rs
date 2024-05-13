@@ -1,40 +1,34 @@
 use iced::mouse;
 use iced::widget::canvas;
-use iced::widget::canvas::{Cache, Fill, Frame, Path, Stroke, Text};
-use iced::{Color, Element, Point, Rectangle, Renderer, Size, Theme, Vector};
+use iced::widget::canvas::{stroke, Cache, Geometry, LineCap, Path, Stroke};
+use iced::{Degrees, Point, Rectangle, Renderer, Theme, Vector};
 
 pub struct Dashboard {
-    size: f32,
-    background: Color,
-    ticks: Vec<u32>,
-    value: u32,
-    cache: Cache,
+    now: u8,
+    clock: Cache,
 }
 
 impl Dashboard {
-    pub fn new(
-        size: f32,
-        background: Color,
-        ticks: Vec<u32>,
-        value: u32,
-        cache: Cache,
-    ) -> Dashboard {
-        Dashboard {
-            size,
-            background,
-            ticks,
-            value,
-            cache,
+    pub fn new(now: u8) -> Self {
+        Self {
+            now,
+            clock: Cache::default(),
         }
     }
+}
 
-    pub fn draw_dashboard<'a, Message>(&self) -> Element<'a, Message> {
-        canvas(self).into()
+impl Default for Dashboard {
+    fn default() -> Self {
+        Self {
+            now: 15,
+            clock: Cache::default(),
+        }
     }
 }
 
 impl<Message> canvas::Program<Message> for Dashboard {
     type State = ();
+
     fn draw(
         &self,
         _state: &Self::State,
@@ -42,45 +36,62 @@ impl<Message> canvas::Program<Message> for Dashboard {
         _theme: &Theme,
         bounds: Rectangle,
         _cursor: mouse::Cursor,
-    ) -> Vec<canvas::Geometry> {
-        let mut geometry = Vec::new();
+    ) -> Vec<Geometry> {
+        let clock = self.clock.draw(renderer, bounds.size(), |frame| {
+            let center = frame.center();
+            let radius = frame.width().min(frame.height()) / 2.0;
 
-        // 创建一个新的路径来绘制仪表盘
-        let mut path = Path::new(|path| {
-            // 绘制仪表盘的刻度
-            for i in (0..=2000).step_by(500) {
-                let angle = i as f32 / 2000.0 * 2.0 * std::f32::consts::PI;
-                let from = Point::new(
-                    bounds.center().x + 200.0 * angle.cos(),
-                    bounds.center().y + 200.0 * angle.sin(),
-                );
-                let to = Point::new(
-                    bounds.center().x + 220.0 * angle.cos(),
-                    bounds.center().y + 220.0 * angle.sin(),
-                );
-                path.move_to(from);
-                path.line_to(to);
+            let background = Path::circle(center, radius);
+            frame.fill(&background, iced::Color::from_rgb8(0x01, 0x1D, 0x42));
+
+            let long_hand = Path::line(Point::ORIGIN, Point::new(0.0, -0.8 * radius));
+
+            let width = radius / 100.0;
+
+            let wide_stroke = || -> Stroke {
+                Stroke {
+                    width: width * 5.0,
+                    style: stroke::Style::Solid(iced::Color::from_rgb8(0x9A, 0x1C, 0x31)),
+                    line_cap: LineCap::Round,
+                    ..Stroke::default()
+                }
+            };
+
+            let scale_stroke = || -> Stroke {
+                Stroke {
+                    width: width * 5.0,
+                    style: stroke::Style::Solid(iced::Color::from_rgb8(60, 208, 210)),
+                    line_cap: LineCap::Round,
+                    ..Stroke::default()
+                }
+            };
+
+            frame.translate(Vector::new(center.x, center.y));
+
+            // Draw hour marks
+            for i in 0..12 {
+                frame.with_save(|frame| {
+                    frame.rotate(Degrees(30.0 * i as f32));
+                    let mark = Path::line(
+                        Point::new(0.0, -0.7 * radius),
+                        Point::new(0.0, -0.8 * radius),
+                    );
+                    frame.stroke(&mark, scale_stroke());
+                });
             }
+
+            frame.with_save(|frame| {
+                frame.rotate(hand_rotation(self.now, 60));
+                frame.stroke(&long_hand, wide_stroke());
+            });
         });
 
-        // 创建一个新的路径来绘制指针
-        let pointer_angle = 700.0 / 2000.0 * 2.0 * std::f32::consts::PI;
-
-        let pointer_to = Point::new(
-            bounds.center().x + 200.0 * pointer_angle.cos(),
-            bounds.center().y + 200.0 * pointer_angle.sin(),
-        );
-
-        // 使用黑色描边来绘制路径
-        let stroke = Stroke::default().with_color(Color::BLACK);
-        geometry.push(self.cache.draw(renderer, bounds.size(), |frame| {
-            // 创建一个新的 Path
-            let mut path = Path::new();
-            path.move_to(Point::new(50.0, 50.0));
-            path.line_to(Point::new(100.0, 100.0));
-
-            // 使用黑色描边来绘制路径
-            frame.stroke(&path, &stroke);
-        }));
+        vec![clock]
     }
+}
+
+fn hand_rotation(n: u8, total: u8) -> Degrees {
+    let turns = n as f32 / total as f32;
+
+    Degrees(360.0 * turns)
 }

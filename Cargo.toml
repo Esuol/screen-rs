@@ -18,6 +18,7 @@ chrono = "0.4.19"
 charts = { path = "packages/charts" }
 plotters = "0.3.5"
 image = "0.25"
+time = { version = "0.3", features = ["local-offset"] }
 
 [workspace.dependencies]
 plotters = "0.3.0"

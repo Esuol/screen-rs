@@ -8,6 +8,7 @@ mod layout;
 mod pie_chart;
 mod solar;
 mod views;
+mod clock;
 
 pub use bar_chart::render_bar_charts;
 pub use cus_dashboard::Dashboard;
@@ -18,6 +19,7 @@ pub use layout::Message;
 pub use pie_chart::render_pie_charts;
 pub use solar::State;
 use std::thread;
+pub use clock::Clock;
 
 fn main() -> iced::Result {
     // 创建一个新的线程来生成所有的图表
