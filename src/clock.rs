@@ -2,7 +2,7 @@ use iced::alignment;
 use iced::mouse;
 use iced::widget::canvas;
 use iced::widget::canvas::{stroke, Cache, Geometry, LineCap, Path, Stroke};
-use iced::{Color, Degrees, Font, Point, Rectangle, Renderer, Theme, Vector};
+use iced::{Degrees, Font, Point, Rectangle, Renderer, Theme, Vector};
 
 pub struct Clock {
     now: time::OffsetDateTime,
@@ -49,7 +49,7 @@ impl<Message> canvas::Program<Message> for Clock {
 
             let thin_stroke = || -> Stroke {
                 Stroke {
-                  width: width * 2.0,
+                    width: width * 2.0,
                     style: stroke::Style::Solid(iced::Color::from_rgb8(0x9A, 0x1C, 0x31)),
                     line_cap: LineCap::Round,
                     ..Stroke::default()

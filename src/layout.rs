@@ -91,10 +91,8 @@ impl Layout {
         } else {
             self.views.view(self.time.clone())
         })
-        .style(|theme| {
-            let palette = theme.extended_palette();
-
-            container::Style::default().with_border(palette.background.strong.color, 4.0)
+        .style(|_theme| {
+            container::Style::default().with_border(iced::Color::from_rgb8(0x01, 0x1D, 0x42), 2.0)
         })
         .padding(4)
         .width(Length::Fill)

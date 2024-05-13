@@ -13,11 +13,11 @@ pub struct Views {
 impl Views {
     const LIST: &'static [Self] = &[
         Self {
-            title: "First-Screen",
+            title: "",
             view: render_first_screen,
         },
         Self {
-            title: "Second-Screen",
+            title: "",
             view: render_first_screen,
         },
     ];
@@ -64,7 +64,7 @@ fn render_first_screen<'a>(time: String) -> Element<'a, Message> {
     // 太阳
     let solar = canvas(State::new()).width(60).height(36);
 
-    let clock = canvas(Clock::default()).width(60).height(36);
+    let clock = canvas(Clock::default()).width(80).height(56);
 
     let header_title = "HSE";
     let header_text = text(header_title)
@@ -79,7 +79,7 @@ fn render_first_screen<'a>(time: String) -> Element<'a, Message> {
             horizontal_space(),
             clock,
         ]
-        .padding(10)
+        .padding(3)
         .align_items(Alignment::Center),
     )
     .style(|theme| {
