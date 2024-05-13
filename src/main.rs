@@ -2,6 +2,7 @@ extern crate charts;
 
 mod bar_chart;
 mod dashboard;
+mod generate_charts;
 mod layout;
 mod pie_chart;
 mod solar;
@@ -16,6 +17,9 @@ pub use pie_chart::render_pie_charts;
 pub use solar::State;
 
 fn main() -> iced::Result {
+    // // 生成所有的图表
+    generate_charts::generate_all_plots();
+
     iced::program(Layout::title, Layout::update, Layout::view)
         .subscription(Layout::subscription)
         .theme(Layout::theme)
